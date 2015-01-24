@@ -1,0 +1,33 @@
+import time
+import datetime
+import Adafruit_DHT
+from decimal import Decimal
+from Adafruit_LEDBackpack import LEDBackpack
+from Adafruit_7Segment  import SevenSegment
+
+
+sensor = Adafruit_DHT.AM2302 #
+pin = 4 
+display = SevenSegment(address=0x70)
+setting = LEDBackpack(address=0x70, debug=False)
+
+
+humidityraw, temperatureraw = Adafruit_DHT.read_retry(sensor, pin)
+
+humidity = Decimal(humidityraw).quantize(Decimal('00'))
+temperature = Decimal(temperatureraw).quantize(Decimal('000'))
+
+
+print ('this is only a test')
+if humidity is not None and temperature is not None:
+ print humidity
+ print temperature
+
+ display.writeDigit(0,1,dot=False)
+ display.writeDigit(1,2,dot=True)
+ display.writeDigit(3,1,dot=False)
+ display.writeDigitRaw(4,118)
+
+
+time.sleep(1)
+setting.clear()
